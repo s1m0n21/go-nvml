@@ -87,4 +87,8 @@ func TestDevice(t *testing.T) {
     computeMode, err := device.ComputeMode()
     require.NoError(t, err)
     t.Logf("compute_mode: %s", computeMode)
+
+    pState, err := device.PerformanceState()
+    require.NoError(t, err)
+    t.Logf("performance_state: %s", pState)
 }

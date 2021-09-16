@@ -237,6 +237,18 @@ func (d *Device) ComputeMode() (string, error) {
 	return computeModeString(mode), err(result)
 }
 
+func (d *Device) PerformanceState() (string, error) {
+	var state C.nvmlPstates_t
+	result := C.nvmlDeviceGetPerformanceState(d.device, &state)
+	return stateString(state), err(result)
+}
+
+func (d *Device) PowerState() (string, error) {
+	var state C.nvmlPstates_t
+	result := C.nvmlDeviceGetPowerState(d.device, &state)
+	return stateString(state), err(result)
+}
+
 func computeModeString(mode C.nvmlComputeMode_t) string {
 	switch mode {
 	case C.NVML_COMPUTEMODE_DEFAULT:
@@ -250,4 +262,12 @@ func computeModeString(mode C.nvmlComputeMode_t) string {
 	default:
 		return "Unknown"
 	}
+}
+
+func stateString(state C.nvmlPstates_t) string {
+	if state == C.NVML_PSTATE_UNKNOWN {
+		return "UNKNOWN"
+	}
+
+	return fmt.Sprintf("P%v", state)
 }
